@@ -116,7 +116,8 @@ rmdir($dir);
 echo "PARENT | [{$parentId}] is complete" . PHP_EOL;
 
 pcntl_wait($status);
-var_export($status);
 
+echo "PARENT | [{$parentId}] status = ";
+var_export($status);
 echo PHP_EOL;
 
