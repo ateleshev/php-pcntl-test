@@ -1,6 +1,8 @@
 <?php
 // Test for maximum throughput when exchanging data via FIFO 
 
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'functions.php';
+
 $executionTime = 1; // by default
 
 if (isset($argv[1]))
@@ -8,12 +10,12 @@ if (isset($argv[1]))
   $executionTime = max($executionTime, intval($argv[1]));
 }
 
-$filepath = __DIR__.'/'.getmypid();
+$filepath = __DIR__ . DIRECTORY_SEPARATOR . getmypid();
 
 $created = posix_mkfifo($filepath, 0777);
 if (!$created)
 {
-  echo "Unable to created FIFO $filepath\n";
+  echo "Unable to created FIFO {$filepath}" . PHP_EOL;
   exit();
 }
 
@@ -37,7 +39,7 @@ else if ($pid == 0)
 {
   // child
 
-  echo "Child started\n";
+  echo "Child started" . PHP_EOL;
 
   $str = str_pad('6p92uor134', 8192, '0');
   $writed = 0;
@@ -51,11 +53,12 @@ else if ($pid == 0)
     {
       $writed += fwrite($fp, $str);
     }
+
     if ($fp) fclose($fp);
   }
 
   $perSec = round($writed / $executionTime);
-  echo "Written $writed bytes ($perSec per second)\n";
+  echo "Written " . convertSizeToHumanReadable($writed) . " (" . convertSizeToHumanReadable($perSec) . "/sec)" . PHP_EOL;
 
   exit(0);
 }
