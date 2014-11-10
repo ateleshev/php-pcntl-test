@@ -64,6 +64,8 @@ pcntl_signal(constant($signal), function($signo) use (&$parentId, &$signal, &$di
 
 echo "PARENT | [{$parentId}] Dispatching..." . PHP_EOL;
 
+$counter = 0;
+
 for ($i = 0; $i < 10; $i++)
 {
   $pid = pcntl_fork();
@@ -74,6 +76,7 @@ for ($i = 0; $i < 10; $i++)
   else if ($pid)
   {
     $children[$pid] = $pid;
+    $counter++;
     echo "PARENT | [{$parentId}] Forck child: {$pid}" . PHP_EOL;
   }
   else
@@ -115,7 +118,11 @@ rmdir($dir);
 
 echo "PARENT | [{$parentId}] is complete" . PHP_EOL;
 
-pcntl_wait($status);
+while ($counter)
+{
+  pcntl_wait($status);
+  $counter--;
+}
 
 echo "PARENT | [{$parentId}] status = ";
 var_export($status);
