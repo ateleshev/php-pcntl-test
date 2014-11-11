@@ -1,9 +1,8 @@
-php-pcntl-test
-==============
+php-pcntl-test (Test: process control in PHP)
+=============================================
 
-Test: process control in PHP
-
-[Test 1]: Pipe throughput
+Test 1: Pipe throughput
+=======================
 php send-xml-c2p-fifo/throughput.php 15
 
 Intel(R) Xeon(R) CPU L5420 @ 2.50GHz
